@@ -8,29 +8,31 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-contract NFToken is ERC721Enumerable, ERC721URIStorage, AccessControl {
+contract PublicationMagnet is ERC721Enumerable, ERC721URIStorage, AccessControl {
     using Counters for Counters.Counter;
     using Strings for uint256;
 
     struct Publication {
-        address writer;
-        string content;
+        bytes32 content;
         uint256 date;
     }
     Counters.Counter private _nftIds;
     mapping(uint256 => Publication) private _publication;
-    bytes32 public constant CREATOR = keccak256("CREATOR");
+    bytes32 public constant AUTHOR = keccak256("AUTHOR");
 
-    constructor() ERC721("NFToken", "NFT") {
-        _setupRole(CREATOR, msg.sender);
+    event Published(address indexed writer, uint256 uriId);
+
+    constructor() ERC721("Publication", "PUB") {
+        _setupRole(AUTHOR, msg.sender);
     }
 
-    function publish(string memory content, uint256 itemId) public onlyRole(CREATOR) returns (uint256) {
+    function publish(bytes32 content, uint256 uriId) public onlyRole(AUTHOR) returns (uint256) {
         _nftIds.increment();
         uint256 currentId = _nftIds.current();
         _mint(msg.sender, currentId);
-        _setTokenURI(currentId, itemId.toString());
-        _publication[currentId] = Publication(msg.sender, content, block.timestamp);
+        _setTokenURI(currentId, uriId.toString());
+        _publication[currentId] = Publication(content, block.timestamp);
+        emit Published(msg.sender, uriId);
         return currentId;
     }
 
@@ -65,7 +67,7 @@ contract NFToken is ERC721Enumerable, ERC721URIStorage, AccessControl {
     }
 
     function _baseURI() internal view virtual override(ERC721) returns (string memory) {
-        return "https://www.magnetgame.com/nft/";
+        return "https://www.nftoken.com/nft/";
     }
 }
 
