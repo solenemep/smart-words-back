@@ -32,6 +32,12 @@ describe('PublicationMagnet', async function () {
   });
 
   describe('publish', async function () {
+    it('Should revert if hashContent already exists', async function () {
+      await publicationMagnet.connect(author).publish(CONTENT, HASH, '1');
+      await expect(publicationMagnet.connect(author).publish(CONTENT, HASH, '1')).to.be.revertedWith(
+        'PublicationMagnet : this content has already been published'
+      );
+    });
     it('Should increase the balance of the author', async function () {
       await publicationMagnet.connect(author).publish(CONTENT, HASH, '1');
       expect(await publicationMagnet.balanceOf(author.address)).to.equal(1);

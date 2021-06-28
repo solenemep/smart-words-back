@@ -29,7 +29,7 @@ contract PublicationMagnet is ERC721Enumerable, ERC721URIStorage {
         bytes32 hashContent,
         uint256 uriId
     ) public returns (uint256) {
-        require(_isAuthentic(hashContent) == true, "PublicationMagner : this content has already been published");
+        require(_isAuthentic(hashContent) == true, "PublicationMagnet : this content has already been published");
         _publicationIds.increment();
         uint256 currentId = _publicationIds.current();
         _mint(msg.sender, currentId);
