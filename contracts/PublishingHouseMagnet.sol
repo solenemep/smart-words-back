@@ -37,7 +37,11 @@ contract PublishingHouseMagnet is AccessControl {
         emit DirectorChanged(director);
     }
 
-    function publish(bytes32 content, uint256 uriId) public onlyRole(AUTHOR) {
-        publicationMagnet.publish(content, uriId);
+    function publish(
+        string memory content,
+        bytes32 hashContent,
+        uint256 uriId
+    ) public onlyRole(AUTHOR) {
+        publicationMagnet.publish(content, hashContent, uriId);
     }
 }

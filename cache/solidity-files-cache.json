@@ -532,8 +532,8 @@
       ]
     },
     "/Users/solenepettier/Desktop/smart-words-back/contracts/PublicationMagnet.sol": {
-      "lastModificationDate": 1624653989691,
-      "contentHash": "f60352543ec351dacd162af171d4cb01",
+      "lastModificationDate": 1624892242136,
+      "contentHash": "83bce67bdc55a9127b4d66575d12fece",
       "sourceName": "contracts/PublicationMagnet.sol",
       "solcConfig": {
         "version": "0.8.4",
@@ -563,7 +563,6 @@
         "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol",
         "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol",
         "@openzeppelin/contracts/utils/Counters.sol",
-        "@openzeppelin/contracts/access/AccessControl.sol",
         "@openzeppelin/contracts/utils/Strings.sol"
       ],
       "versionPragmas": [
@@ -574,8 +573,8 @@
       ]
     },
     "/Users/solenepettier/Desktop/smart-words-back/contracts/PublishingHouseMagnet.sol": {
-      "lastModificationDate": 1624658314363,
-      "contentHash": "db0cbf32fa409ea278034bb37712e133",
+      "lastModificationDate": 1624890948318,
+      "contentHash": "f20fccd6ac559c82b3d5a9ce87b36cf3",
       "sourceName": "contracts/PublishingHouseMagnet.sol",
       "solcConfig": {
         "version": "0.8.4",
