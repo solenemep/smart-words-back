@@ -41,24 +41,17 @@ describe('PublicationMagnet', async function () {
       await publicationMagnet.connect(author).publish(CONTENT, HASH, '1');
       expect(await publicationMagnet.balanceOf(author.address)).to.equal(1);
     });
-    /*
-    it(`Should create Publication with current id`, async function () {
-      await publicationMagnet.connect(author).publish(CONTENT, HASH, '1');
-      const blockNumber = await ethers.provider.getBlockNumber();
-      const block = await ethers.provider.getBlock(blockNumber);
-      const blockTimestamp = block.timestamp;
-      expect(await publicationMagnet.getPublicationById(1).to.equal(Publication(...));
-    });
-    */
     it('Should link id to hash', async function () {
       await publicationMagnet.connect(author).publish(CONTENT, HASH, '1');
       expect(await publicationMagnet.getIdByHash(HASH)).to.equal(1);
     });
-    /*
     it('Should link Publication to id', async function () {
-      expect(await publicationMagnet.getPublicationById(1)).to.equal(Publication(...));
+      const blockNumber = await ethers.provider.getBlockNumber();
+      const block = await ethers.provider.getBlock(blockNumber);
+      const blockTimestamp = block.timestamp;
+      await publicationMagnet.connect(author).publish(CONTENT, HASH, '1');
+      expect(await publicationMagnet.getPublicationById(1)).to.equal([author.address, CONTENT, HASH, blockTimestamp]);
     });
-*/
     it('Should attach author to Publication', async function () {
       await publicationMagnet.connect(author).publish(CONTENT, HASH, '1');
       expect(await publicationMagnet.ownerOf(1)).to.equal(author.address);
