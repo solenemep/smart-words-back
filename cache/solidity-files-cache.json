@@ -573,8 +573,8 @@
       ]
     },
     "/Users/solenepettier/Desktop/smart-words-back/contracts/PublishingHouseMagnet.sol": {
-      "lastModificationDate": 1624962569325,
-      "contentHash": "2cab89d37003e1b7cd5cc85ae0b93e1d",
+      "lastModificationDate": 1624998988706,
+      "contentHash": "ceda0e398f5d38fc0d807fbd2fd4b0a8",
       "sourceName": "contracts/PublishingHouseMagnet.sol",
       "solcConfig": {
         "version": "0.8.4",

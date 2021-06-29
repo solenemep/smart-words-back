@@ -10,15 +10,14 @@ describe('PublicationMagnet', async function () {
 
   const NAME = 'Publication';
   const SYMBOL = 'PUB';
-  const AUTHOR = ethers.utils.id('AUTHOR');
   const CONTENT = 'HOLA';
   const HASH = ethers.utils.id(CONTENT);
   const URI = 'https://www.publication.com/nft/1';
 
   beforeEach(async function () {
-    [dev, author, admin, alice, bob] = await ethers.getSigners();
+    [dev, author, alice, bob] = await ethers.getSigners();
     PublicationMagnet = await ethers.getContractFactory('PublicationMagnet');
-    publicationMagnet = await PublicationMagnet.connect(author).deploy();
+    publicationMagnet = await PublicationMagnet.connect(dev).deploy();
     await publicationMagnet.deployed();
   });
 

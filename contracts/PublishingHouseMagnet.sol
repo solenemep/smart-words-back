@@ -9,76 +9,59 @@ import "./PublicationMagnet.sol";
 contract PublishingHouseMagnet is AccessControl {
     using Counters for Counters.Counter;
 
-    address private _director;
     Counters.Counter private _publishingHouseIds;
 
-    PublicationMagnet public publicationMagnet;
+    PublicationMagnet private _publicationMagnet;
 
-    mapping(uint256 => uint256) public priceById;
+    mapping(uint256 => uint256) private _priceById;
 
     bytes32 public constant ADMIN = keccak256("ADMIN");
-    bytes32 public constant DIRECTOR = keccak256("DIRECTOR");
 
-    event DirectorChanged(address indexed account);
     event PriceSet(uint256 idPub, uint256 price);
     event Bought(address indexed sender, uint256 idPub);
 
-    constructor(address director_) {
+    constructor(address publicationMagnetAddress) {
         _setRoleAdmin(ADMIN, ADMIN);
-        _setRoleAdmin(DIRECTOR, ADMIN);
         _setupRole(ADMIN, msg.sender);
-        _setupRole(DIRECTOR, _director);
-        _director = director_;
-        publicationMagnet = new PublicationMagnet();
+        _publicationMagnet = PublicationMagnet(publicationMagnetAddress);
     }
 
     modifier onlyOwner(uint256 idPub) {
         require(
-            publicationMagnet.ownerOf(idPub) == msg.sender,
-            "PublicationHouseMagnet : you don't own this publication"
+            _publicationMagnet.ownerOf(idPub) == msg.sender,
+            "PublishingHouseMagnet : you don't own this publication"
         );
         _;
     }
     modifier notOwner(uint256 idPub) {
         require(
-            publicationMagnet.ownerOf(idPub) != msg.sender,
-            "PublicationHouseMagnet : you already own this publication"
+            _publicationMagnet.ownerOf(idPub) != msg.sender,
+            "PublishingHouseMagnet : you already own this publication"
         );
         _;
     }
 
-    function changeDirector(address director) public onlyRole(ADMIN) {
-        revokeRole(DIRECTOR, _director);
-        _director = director;
-        grantRole(DIRECTOR, _director);
-        emit DirectorChanged(director);
-    }
-
-    function publish(
-        string memory content,
-        bytes32 hashContent,
-        uint256 uriId
-    ) public {
-        publicationMagnet.publish(content, hashContent, uriId);
-    }
-
-    function setPrice(uint256 idPub, uint256 price) public onlyRole(DIRECTOR) onlyOwner(idPub) {
-        priceById[idPub] = price;
+    function setPrice(uint256 idPub, uint256 price) public onlyOwner(idPub) {
+        _priceById[idPub] = price;
         emit PriceSet(idPub, price);
     }
 
-    function buy(uint256 idPub) public payable {
-        _buy(msg.sender, msg.value, idPub);
+    function buy(uint256 idPub) public payable notOwner(idPub) {
+        require(
+            msg.value == _priceById[idPub],
+            "PublishingHouseMagnet : Please send the right amount according to price"
+        );
+        require(_priceById[idPub] != 0, "PublishingHouseMagnet : Price has not been set");
+        address owner = _publicationMagnet.ownerOf(idPub);
+        _publicationMagnet.transferFrom(owner, msg.sender, idPub);
+        emit Bought(msg.sender, idPub);
     }
 
-    function _buy(
-        address sender,
-        uint256 value,
-        uint256 idPub
-    ) private notOwner(idPub) {
-        require(value == priceById[idPub], "PublicationHouseMagnet : Please send the right amount according to price");
-        address owner = publicationMagnet.ownerOf(idPub);
-        publicationMagnet.transferFrom(owner, sender, idPub);
-        emit Bought(sender, idPub);
+    function getPriceById(uint256 idPub) public view returns (uint256) {
+        return _priceById[idPub];
+    }
+
+    function publicationMagnet() public view returns (PublicationMagnet) {
+        return _publicationMagnet;
     }
 }
