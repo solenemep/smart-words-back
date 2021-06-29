@@ -12,6 +12,7 @@ contract PublicationMagnet is ERC721Enumerable, ERC721URIStorage {
     using Strings for uint256;
 
     struct Publication {
+        address author;
         string content;
         bytes32 hashContent;
         uint256 date;
@@ -35,14 +36,17 @@ contract PublicationMagnet is ERC721Enumerable, ERC721URIStorage {
         _mint(msg.sender, currentId);
         _setTokenURI(currentId, uriId.toString());
         _idByHash[hashContent] = currentId;
-        _publicationById[currentId] = Publication(content, hashContent, block.timestamp);
+        _publicationById[currentId] = Publication(msg.sender, content, hashContent, block.timestamp);
         emit Published(msg.sender, content);
         return currentId;
     }
 
-    function _isAuthentic(bytes32 hashContent) private returns (bool) {
-        return true;
-        // _idByHash[hashContent] == 0
+    function _isAuthentic(bytes32 hashContent) private view returns (bool) {
+        if (_idByHash[hashContent] == 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     function getIdByHash(bytes32 hashContent) public view returns (uint256) {

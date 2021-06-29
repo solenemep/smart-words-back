@@ -48,7 +48,7 @@ describe('PublicationMagnet', async function () {
       const blockNumber = await ethers.provider.getBlockNumber();
       const block = await ethers.provider.getBlock(blockNumber);
       const blockTimestamp = block.timestamp;
-      expect(await publicationMagnet.getPublicationById(1).to.equal(??);
+      expect(await publicationMagnet.getPublicationById(1).to.equal(Publication(...));
     });
     */
     it('Should link id to hash', async function () {

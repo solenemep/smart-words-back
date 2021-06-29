@@ -532,8 +532,8 @@
       ]
     },
     "/Users/solenepettier/Desktop/smart-words-back/contracts/PublicationMagnet.sol": {
-      "lastModificationDate": 1624892242136,
-      "contentHash": "83bce67bdc55a9127b4d66575d12fece",
+      "lastModificationDate": 1624963066848,
+      "contentHash": "0b4df97c5c4f3bedd9054955bf665c46",
       "sourceName": "contracts/PublicationMagnet.sol",
       "solcConfig": {
         "version": "0.8.4",
@@ -573,8 +573,8 @@
       ]
     },
     "/Users/solenepettier/Desktop/smart-words-back/contracts/PublishingHouseMagnet.sol": {
-      "lastModificationDate": 1624890948318,
-      "contentHash": "f20fccd6ac559c82b3d5a9ce87b36cf3",
+      "lastModificationDate": 1624962569325,
+      "contentHash": "2cab89d37003e1b7cd5cc85ae0b93e1d",
       "sourceName": "contracts/PublishingHouseMagnet.sol",
       "solcConfig": {
         "version": "0.8.4",
