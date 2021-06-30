@@ -46,11 +46,16 @@ describe('PublicationMagnet', async function () {
       expect(await publicationMagnet.getIdByHash(HASH)).to.equal(1);
     });
     it('Should link Publication to id', async function () {
+      await publicationMagnet.connect(author).publish(CONTENT, HASH, '1');
       const blockNumber = await ethers.provider.getBlockNumber();
       const block = await ethers.provider.getBlock(blockNumber);
       const blockTimestamp = block.timestamp;
-      await publicationMagnet.connect(author).publish(CONTENT, HASH, '1');
-      expect(await publicationMagnet.getPublicationById(1)).to.equal([author.address, CONTENT, HASH, blockTimestamp]);
+      expect(await publicationMagnet.getPublicationById(1)).to.equal([
+        author.address,
+        CONTENT,
+        HASH,
+        { _hex: ethers.utils.hexlify(blockTimestamp), _isBigNumber: true },
+      ]);
     });
     it('Should attach author to Publication', async function () {
       await publicationMagnet.connect(author).publish(CONTENT, HASH, '1');
