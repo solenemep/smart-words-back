@@ -27,6 +27,7 @@ describe('PublicationHouseMagnet', async function () {
   describe('Deployment', async function () {
     it('Sets dev as ADMIN', async function () {
       expect(await publishingHouseMagnet.hasRole(ADMIN, dev.address)).to.be.true;
+      expect(await publishingHouseMagnet.hasRole(ADMIN, alice.address)).to.be.false;
     });
     it(`Sets PublicationMagnet address`, async function () {
       expect(await publishingHouseMagnet.publicationMagnet()).to.equal(publicationMagnet.address);

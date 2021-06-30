@@ -45,6 +45,12 @@ describe('PublicationMagnet', async function () {
       await publicationMagnet.connect(author).publish(CONTENT, HASH, '1');
       expect(await publicationMagnet.getIdByHash(HASH)).to.equal(1);
     });
+    it('Should link id to author', async function () {
+      await publicationMagnet.connect(author).publish(CONTENT, HASH, '1');
+      expect(await publicationMagnet.getIdByAuthor(author.address)).to.equal([
+        { _hex: ethers.utils.hexlify(1), _isBigNumber: true },
+      ]);
+    });
     it('Should link Publication to id', async function () {
       await publicationMagnet.connect(author).publish(CONTENT, HASH, '1');
       const blockNumber = await ethers.provider.getBlockNumber();

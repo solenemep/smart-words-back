@@ -19,6 +19,7 @@ contract PublicationMagnet is ERC721Enumerable, ERC721URIStorage {
     }
     Counters.Counter private _publicationIds;
     mapping(bytes32 => uint256) private _idByHash;
+    mapping(address => uint256[]) private _idByAuthor;
     mapping(uint256 => Publication) private _publicationById;
 
     event Published(address indexed writer, string content);
@@ -36,6 +37,7 @@ contract PublicationMagnet is ERC721Enumerable, ERC721URIStorage {
         _mint(msg.sender, currentId);
         _setTokenURI(currentId, uriId.toString());
         _idByHash[hashContent] = currentId;
+        _idByAuthor[msg.sender].push(currentId);
         _publicationById[currentId] = Publication(msg.sender, content, hashContent, block.timestamp);
         emit Published(msg.sender, content);
         return currentId;
@@ -51,6 +53,10 @@ contract PublicationMagnet is ERC721Enumerable, ERC721URIStorage {
 
     function getIdByHash(bytes32 hashContent) public view returns (uint256) {
         return _idByHash[hashContent];
+    }
+
+    function getIdByAuthor(address author) public view returns (uint256[] memory) {
+        return _idByAuthor[author];
     }
 
     function getPublicationById(uint256 id) public view returns (Publication memory) {
