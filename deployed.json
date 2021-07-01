@@ -1,4 +1,1 @@
-{
-  "PublicationMagnet": { "kovan": { "address": "0x957935Bf4C9c1CAe0Fed773cB7e0147B636229fc" } },
-  "PublishingHouseMagnet": { "kovan": { "address": "0x873Ac8F29871897c4E3B4CF9461A16F700526d44" } }
-}
+{"PublicationMagnet":{"kovan":{"address":"0x6e2f8f6Df2Fc7E7b2A7419Ac6F140113bcf7366B"}},"PublishingHouseMagnet":{"kovan":{"address":"0xd62a9D6cA585E0c1583Ba94374773967a7EDC5A7"}}}

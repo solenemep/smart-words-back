@@ -4,10 +4,12 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/utils/Address.sol";
 import "./PublicationMagnet.sol";
 
 contract PublishingHouseMagnet is AccessControl {
     using Counters for Counters.Counter;
+    using Address for address payable;
 
     Counters.Counter private _publishingHouseIds;
 
@@ -54,6 +56,7 @@ contract PublishingHouseMagnet is AccessControl {
         require(_priceById[idPub] != 0, "PublishingHouseMagnet : Price has not been set");
         address owner = _publicationMagnet.ownerOf(idPub);
         _publicationMagnet.transferFrom(owner, msg.sender, idPub);
+        payable(owner).sendValue(msg.value);
         emit Bought(msg.sender, idPub);
     }
 

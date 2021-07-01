@@ -63,6 +63,7 @@ describe('PublicationHouseMagnet', async function () {
     it('Reverts if value is not equal to price', async function () {
       await publicationMagnet.connect(author).publish(CONTENT, HASH, '1');
       await publishingHouseMagnet.connect(author).setPrice(1, PRICE);
+      await publicationMagnet.connect(author).approve(publishingHouseMagnet.address, 1);
       await expect(publishingHouseMagnet.connect(alice).buy(1, { value: PRICE - 1, gasPrice: 0 })).to.be.revertedWith(
         'PublishingHouseMagnet : Please send the right amount according to price'
       );
@@ -73,13 +74,29 @@ describe('PublicationHouseMagnet', async function () {
         'PublishingHouseMagnet : Price has not been set'
       );
     });
-    it('Transfers Publication to new owner', async function () {});
+    it('Transfers Publication to new owner', async function () {
+      await publicationMagnet.connect(author).publish(CONTENT, HASH, '1');
+      await publishingHouseMagnet.connect(author).setPrice(1, PRICE);
+      await publicationMagnet.connect(author).approve(publishingHouseMagnet.address, 1);
+      await publishingHouseMagnet.connect(alice).buy(1, { value: PRICE, gasPrice: 0 });
+      expect(await publicationMagnet.balanceOf(alice.address)).to.equal(1);
+      expect(await publicationMagnet.balanceOf(author.address)).to.equal(0);
+    });
+    it('Changes ETH balances', async function () {
+      await publicationMagnet.connect(author).publish(CONTENT, HASH, '1');
+      await publishingHouseMagnet.connect(author).setPrice(1, PRICE);
+      await publicationMagnet.connect(author).approve(publishingHouseMagnet.address, 1);
+      const tx = await publishingHouseMagnet.connect(alice).buy(1, { value: PRICE, gasPrice: 0 });
+      expect(tx).to.changeEtherBalance(alice, -PRICE);
+      expect(tx).to.changeEtherBalance(author, +PRICE);
+    });
     it(`Emits Bought event`, async function () {
       await publicationMagnet.connect(author).publish(CONTENT, HASH, '1');
-      await expect(publishingHouseMagnet.connect(author).setPrice(1, PRICE));
-      expect(await publishingHouseMagnet.connect(author).setPrice(1, PRICE))
-        .to.emit(publishingHouseMagnet, 'PriceSet')
-        .withArgs(1, PRICE);
+      await publishingHouseMagnet.connect(author).setPrice(1, PRICE);
+      await publicationMagnet.connect(author).approve(publishingHouseMagnet.address, 1);
+      expect(await publishingHouseMagnet.connect(alice).buy(1, { value: PRICE, gasPrice: 0 }))
+        .to.emit(publishingHouseMagnet, 'Bought')
+        .withArgs(alice.address, 1);
     });
   });
 });
